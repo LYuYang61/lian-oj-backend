@@ -48,6 +48,7 @@ public class CodeSandboxTest {
         while (scanner.hasNext()) {
             String type = scanner.next();
             CodeSandbox codeSandbox = CodeSandboxFactory.newInstance(type);
+            codeSandbox = new CodeSandboxProxy(codeSandbox);    // 代码沙箱代理
             String code = "int main() { }";
             String language = QuestionSubmitLanguageEnum.JAVA.getValue();
             List<String> inputList = Arrays.asList("1 2", "3 4");
@@ -60,4 +61,6 @@ public class CodeSandboxTest {
             Assertions.assertNotNull(executeCodeResponse);
         }
     }
+
+
 }
