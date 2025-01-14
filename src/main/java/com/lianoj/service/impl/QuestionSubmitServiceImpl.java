@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lianoj.common.ErrorCode;
 import com.lianoj.constant.CommonConstant;
 import com.lianoj.exception.BusinessException;
+import com.lianoj.judge.JudgeService;
 import com.lianoj.model.dto.questionsubmit.QuestionSubmitAddRequest;
 import com.lianoj.model.dto.questionsubmit.QuestionSubmitQueryRequest;
 import com.lianoj.model.entity.Question;
@@ -22,11 +23,13 @@ import com.lianoj.utils.SqlUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +46,10 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
 
     @Resource
     private UserService userService;
+
+    @Resource
+    @Lazy // 懒加载，解决循环依赖问题
+    private JudgeService judgeService;
 
     /**
      * 提交题目
@@ -80,7 +87,16 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         if (!save) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "数据插入失败");
         }
-        return questionSubmit.getId();
+        Long questionSubmitId = questionSubmit.getId();
+        // 执行判题服务
+        CompletableFuture.runAsync(() -> { // 异步执行
+            try {
+                judgeService.doJudge(questionSubmitId);
+            } catch (Exception e) {
+                throw new BusinessException(ErrorCode.SYSTEM_ERROR, "判题服务异常");
+            }
+        });
+        return questionSubmitId;
     }
 
     /**
