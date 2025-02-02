@@ -9,6 +9,7 @@ import com.lianoj.model.enums.JudgeInfoMessageEnum;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author lian
@@ -27,8 +28,8 @@ public class JavaLanguageJudgeStrategy implements JudgeStrategy{
     public JudgeInfo doJudge(JudgeContext judgeContext) {
         // 获取代码沙箱执行所得的判题信息
         JudgeInfo judgeInfo = judgeContext.getJudgeInfo();
-        Long memory = judgeInfo.getMemory();
-        Long time = judgeInfo.getTime();
+        Long memory = Optional.ofNullable(judgeInfo.getMemory()).orElse(0L);
+        Long time = Optional.ofNullable(judgeInfo.getTime()).orElse(0L);
         List<String> inputList = judgeContext.getInputList();   // 获取题目的输入
         List<String> outputList = judgeContext.getOutputList(); // 获取代码沙箱执行的结果
         Question question = judgeContext.getQuestion();
