@@ -4,6 +4,7 @@ import com.lianoj.common.PageRequest;
 import com.lianoj.model.dto.post.PostQueryRequest;
 
 import java.io.Serializable;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

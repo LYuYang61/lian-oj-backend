@@ -1,16 +1,13 @@
 package com.lianoj.model.vo;
 
 import cn.hutool.json.JSONUtil;
-import com.lianoj.model.dto.question.JudgeConfig;
 import com.lianoj.model.dto.questionsubmit.JudgeInfo;
-import com.lianoj.model.entity.Question;
 import com.lianoj.model.entity.QuestionSubmit;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author lian

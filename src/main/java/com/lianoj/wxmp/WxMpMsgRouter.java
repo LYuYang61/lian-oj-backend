@@ -4,6 +4,7 @@ import com.lianoj.wxmp.handler.EventHandler;
 import com.lianoj.wxmp.handler.MessageHandler;
 import com.lianoj.wxmp.handler.SubscribeHandler;
 import javax.annotation.Resource;
+
 import me.chanjar.weixin.common.api.WxConsts.EventType;
 import me.chanjar.weixin.common.api.WxConsts.XmlMsgType;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
